@@ -1,0 +1,76 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d32d5cadf8050eb4d99dfb4dfd5160c9, type: 3}
+  m_Name: FaceDamageConfig
+  m_EditorClassIdentifier: 
+  zones:
+  - hitZone: 0
+    blendShapes: 0a0000000300000001000000020000001000000011000000
+    intensity: 120
+  - hitZone: 1
+    blendShapes: 08000000050000000200000011000000250000000d000000
+    intensity: 120
+  - hitZone: 2
+    blendShapes: 07000000040000000100000010000000250000000c000000
+    intensity: 120
+  - hitZone: 5
+    blendShapes: 3100000001000000020000000c0000000d0000000a000000
+    intensity: 120
+  - hitZone: 4
+    blendShapes: 070000000a0000000c00000010000000010000000400000019000000
+    intensity: 120
+  - hitZone: 3
+    blendShapes: 080000000a0000000d0000001100000002000000050000001b000000
+    intensity: 120
+  - hitZone: 6
+    blendShapes: 250000001e000000030000001000000011000000
+    intensity: 120
+  - hitZone: 7
+    blendShapes: 0c0000000d00000019000000240000001f00000002000000
+    intensity: 120
+  - hitZone: 8
+    blendShapes: 0d0000000c0000001b000000240000001f00000001000000
+    intensity: 120
+  - hitZone: 9
+    blendShapes: 00000000030000000d0000000c000000
+    intensity: 120
+  - hitZone: 9
+    blendShapes: 00000000030000000d000000
+    intensity: 120
+  points:
+  - hitZone: 0
+    localPosition: {x: 0.01, y: 0.07, z: 0.08}
+  - hitZone: 1
+    localPosition: {x: 0.03, y: 0.03, z: 0.07}
+  - hitZone: 2
+    localPosition: {x: -0.03, y: 0.03, z: 0.07}
+  - hitZone: 3
+    localPosition: {x: 0.05, y: 0, z: 0.08}
+  - hitZone: 4
+    localPosition: {x: -0.05, y: 0, z: 0.08}
+  - hitZone: 5
+    localPosition: {x: 0, y: 0.02, z: 0.09}
+  - hitZone: 6
+    localPosition: {x: 0, y: -0.03, z: 0.09}
+  - hitZone: 7
+    localPosition: {x: 0.03, y: -0.05, z: 0.08}
+  - hitZone: 8
+    localPosition: {x: -0.03, y: -0.05, z: 0.08}
+  - hitZone: 9
+    localPosition: {x: 0, y: -0.06, z: 0.09}
+  animationDuration: 0.15
+  fadeOutDuration: 0.4
+  autoFadeOut: 1
+  bruisePrefab: {fileID: 6043958277863981271, guid: 463a7ecf1f64cd94e81fce54dc5acb3a,
+    type: 3}
+  bruiseLifetime: 3
+  bruiseFadeDuration: 2
