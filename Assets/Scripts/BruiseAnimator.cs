@@ -1,4 +1,5 @@
 using DG.Tweening;
+using System;
 using UnityEngine;
 using UnityEngine.Pool;
 using UnityEngine.Rendering.Universal;
@@ -7,7 +8,7 @@ public interface IBruiseSpawner {
 }
 
 
-public class BruiseAnimator : IBruiseSpawner {
+public class BruiseAnimator : IBruiseSpawner, IDisposable{
 	private readonly ObjectPool<PooledDecal> pool;
 	private readonly float lifetime;
 	private readonly float fadeDuration;
@@ -18,7 +19,7 @@ public class BruiseAnimator : IBruiseSpawner {
 
 		pool = new ObjectPool<PooledDecal>(
 			createFunc: () => {
-				var instance = Object.Instantiate(prefab);				
+				var instance = GameObject.Instantiate(prefab);				
 				return new PooledDecal(instance);
 			},
 			actionOnGet: decal => {
@@ -29,12 +30,17 @@ public class BruiseAnimator : IBruiseSpawner {
 				decal.GameObject.SetActive(false);
 			},
 			actionOnDestroy: decal => {
-				Object.Destroy(decal.GameObject);
+				GameObject.Destroy(decal.GameObject);
 			},
 			collectionCheck: false,
 			defaultCapacity: 10,
 			maxSize: 30
 		);
+	}
+
+	public void Dispose() {
+		DOTween.KillAll(); 
+		pool.Clear();
 	}
 
 	public void SpawnBruise(Vector3 worldPosition, Vector3 normal) {

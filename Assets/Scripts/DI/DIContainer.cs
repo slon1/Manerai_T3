@@ -7,6 +7,11 @@ public class DIContainer: IDisposable {
 	private readonly Dictionary<Type, object> services = new Dictionary<Type, object>();
 
 	public void Dispose() {
+		foreach (var service in services.Values) {
+			if (service is IDisposable disposableService) {
+				disposableService.Dispose();
+			}
+		}
 		services.Clear();
 	}
 

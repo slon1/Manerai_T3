@@ -1,47 +1,45 @@
-using System;
-using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.VFX;
 [System.Serializable]
 public class HitZonePoint {
 	public FaceHitZone hitZone;
 	public Vector3 localPosition;
 }
-public class FaceHit : MonoBehaviour {    
-	[SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;	
-	
-	
-	private FaceDamageConfig config;	
-	private IFaceHitAnimator hitAnim;	
+public class FaceHit : MonoBehaviour {
+	[SerializeField] private SkinnedMeshRenderer skinnedMeshRenderer;
+
+
+	private FaceDamageConfig config;
+	private IFaceHitAnimator hitAnim;
 	private IFaceHitClickDetector detector;
 	private IBruiseSpawner bruiseAnimator;
-	
-	void Start()
-    {
-		config=Installer.GetService<FaceDamageConfig>();
-		detector = Installer.GetService<IFaceHitClickDetector>(); ;
+
+	private Dictionary<FaceHitZone, List<FaceBlendShape>> zoneToBlendShapes;
+	void Start() {
+		config = Installer.GetService<FaceDamageConfig>();
+		detector = Installer.GetService<IFaceHitClickDetector>();
 		detector.OnClick += Detector_OnClick;
-		hitAnim = Installer.GetService<IFaceHitAnimator>(); 
+		hitAnim = Installer.GetService<IFaceHitAnimator>();
 		hitAnim.SetMeshRenderer(skinnedMeshRenderer);
 		bruiseAnimator = Installer.GetService<IBruiseSpawner>();
-		
-    }
-	public void ApplyHit(FaceHitZone zone) {
+		zoneToBlendShapes = new Dictionary<FaceHitZone, List<FaceBlendShape>>();
 		foreach (var entry in config.zones) {
-			if (entry.hitZone == zone) {
-				foreach (var shape in entry.blendShapes) {
-					hitAnim.AnimateBlendShape((int)shape, entry.intensity);
-				}
-				break;
+			zoneToBlendShapes[entry.hitZone] = entry.blendShapes;
+		}
+
+	}
+	public void ApplyHit(FaceHitZone zone) {
+		if (zoneToBlendShapes.TryGetValue(zone, out var blendShapes)) {
+			foreach (var shape in blendShapes) {
+				hitAnim.AnimateBlendShape((int)shape, config.zones.Find(z => z.hitZone == zone).intensity);
 			}
 		}
 	}
 
 	private void Detector_OnClick(Vector3 worldPosition, Vector3 localPosition, Vector3 normal) {
-		var zone=GetClosestZone(localPosition);
+		var zone = GetClosestZone(localPosition);
 		ApplyHit(zone);
-		bruiseAnimator.SpawnBruise(worldPosition,normal);
+		bruiseAnimator.SpawnBruise(worldPosition, normal);
 	}
 
 	public FaceHitZone GetClosestZone(Vector3 localHit) {
@@ -62,8 +60,9 @@ public class FaceHit : MonoBehaviour {
 
 	private void OnDestroy() {
 		detector.OnClick -= Detector_OnClick;
-		detector=null;		
+		detector = null;
 		hitAnim = null;
 		bruiseAnimator = null;
+		zoneToBlendShapes.Clear();
 	}
 }
